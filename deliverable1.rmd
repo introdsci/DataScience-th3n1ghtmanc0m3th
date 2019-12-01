@@ -1,0 +1,153 @@
+---
+title: "Portfolio Project"
+author: "Jay Gohner"
+date: "October 10, 2019"
+output: html_document
+---
+
+
+INTRODUCTION:
+  I want to see if there are any relations between the levels of education that a certain state in the US has
+  compared to it's rates of violent crimes. I believe that the more educated a population, the more access that
+  population has to higher education, the less likely there is to be incidents of violent crime. Maybe information
+  like this could help to show with hard numbers why we need to take education more seriously in this country.
+  
+  The initial dataset I will start with is from the USDA and it contains census bureau figures from 1970, 1980, 1990
+  and 2000 as well as the 2013 - 2017 American Community Survey 5 year average.
+  
+  The data was quite vast, including data points from each county in America, so I made the conscious decision to
+  focus only on states. I also decided to drop the remaining columns for 2013-2017 as I felt they didnt fit with the
+  decade format the other information was in.
+  
+  Finding this source was actually more difficult than I had initially assumed, apparently the current
+  administration been quietly removing many datasets. Thankfully the USDA has not been big on complying with these
+  "requests" and I was able to obtain this dataset that I feel gives me a good start in the right direction for my
+  project. The next steps will involve finding reliable sources of violent crime rates by county in these same
+  years. I think another dataset of money spent on higher education and perhaps concentration of schools in areas
+  could also provide me with more insights.
+  
+  The original column names are as follows:
+      State - this contains the state the observation takes place in
+      Area name - this contains the county the observation takes place in
+      Less than a high school diploma, 1970 - number of adults who have less than a high school diploma
+      High school diploma only, 1970 - number of adults who have who have a high school diploma
+      Some college (1-3 years), 1970 - number of adults who have who have some college education
+      Four years of college or higher, 1970 - number of adults who have completed 4 or more years of college
+      Percent of adults with less than a high school diploma, 1970 - percentage of adults
+      Percent of adults with a high school diploma only, 1970 - percentage of adults
+      Percent of adults completing some college (1-3 years), 1970 - percentage of adults
+      Percent of adults completing four years of college or higher, 1970 - percentage of adults
+      These columns are then repeated for 1980, 1990 and 2000
+  
+  A note on the data: for 1970 and 1980, the share of adults with less than high school includes those who had not
+  completed the 12th grade. In 1990, and 2000 the share includes those who did not receive a high school
+  diploma or its equivalent (such as a GED).
+  
+  I will be renaming the column names in the original dataset and dropping the first column which is some sort of
+  unique key id along with four other unique key ids that are not relevant.
+  
+  Certain functions and special packages in R can help us organize this data. They are loaded in as libraries. I use the
+  suppressMessages function to make the print out a bit cleaner.
+```{r}
+suppressMessages(library("tidyverse"))
+suppressMessages(library("tidyr"))
+suppressMessages(library("dplyr"))
+suppressMessages(library("readr"))
+suppressMessages(library("stringr"))
+suppressMessages(library("readxl"))
+```
+
+After loading all necessary libraries, we will import the Education.csv dataset using read_csv(). This function reads in a
+csv and makes it into a tibble. A tibble can be thought of as something similar to an excel spreadsheet.
+```{r}
+eduLevelsbyCounty <- read_csv("Education.csv")
+```
+
+This data gives the numbers and percentages for adults 18 and older and the level of education they obtained by county in
+the USA. The column names were long and wordy so I cleaned them up by accessing thw column names and then assigning them
+new ones. I then use the select() function to drop some unique identifier columns that serve no purpose to this project.
+
+```{r}
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "State"] <- "state"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Area name"] <- "area_name"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Less than a high school diploma, 1970"] <- "Less Than Diploma, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "High school diploma only, 1970"] <- "Diploma, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Some college (1-3 years), 1970"] <- "AA or more, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Four years of college or higher, 1970"] <- "BA or more, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with less than a high school diploma, 1970"] <- "%Less Than Diploma, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with a high school diploma only, 1970"] <- "% Diploma, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults completing some college (1-3 years), 1970"] <- "% AA or more, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults completing four years of college or higher, 1970"] <- "% BA or more, 1970"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Less than a high school diploma, 1980"] <- "Less Than Diploma, 1980"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "High school diploma only, 1980"] <- "Diploma, 1980" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Some college (1-3 years), 1980"] <- "AA or more, 1980" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Four years of college or higher, 1980"] <- "BA or more, 1980" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with less than a high school diploma, 1980"] <- "% Less Than Diploma, 1980" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with a high school diploma only, 1980"] <- "% Diploma, 1980" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults completing some college (1-3 years), 1980"] <- "% AA or more, 1980" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults completing four years of college or higher, 1980"] <- "% BA or more, 1980"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Less than a high school diploma, 1990"] <- "Less Than Diploma, 1990"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "High school diploma only, 1990"] <- "Diploma, 1990" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Some college or associate's degree, 1990"] <- "AA or more, 1990" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Bachelor's degree or higher, 1990"] <- "BA or more, 1990" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with less than a high school diploma, 1990"] <- "% Less Than Diploma, 1990" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with a high school diploma only, 1990"] <- "% Diploma, 1990" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults completing some college or associate's degree, 1990"] <- "% AA or more, 1990" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with a bachelor's degree or higher, 1990"] <- "% BA or more, 1990"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Less than a high school diploma, 2000"] <- "Less Than Diploma, 2000"
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "High school diploma only, 2000"] <- "Diploma, 2000" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Some college or associate's degree, 2000"] <- "AA or more, 2000" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Bachelor's degree or higher, 2000"] <- "BA or more, 2000" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with less than a high school diploma, 2000"] <- "% Less Than Diploma, 2000" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with a high school diploma only, 2000"] <- "% Diploma, 2000" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults completing some college or associate's degree, 2000"] <- "% AA or more, 2000" 
+colnames(eduLevelsbyCounty)[colnames(eduLevelsbyCounty) == "Percent of adults with a bachelor's degree or higher, 2000"] <- "% BA or more, 2000"
+
+eduLevelsbyCounty <- select(eduLevelsbyCounty, 2, 3, 8:39)
+
+whole_nums_edu_levels <- select(eduLevelsbyCounty, 1:6, 11:14, 19:22, 27:30)
+percents_edu_levels <- select(eduLevelsbyCounty, 1:2, 7:10, 15:18, 23:26, 31:34)
+```
+
+I decided to graph the US as a whole and show the trends of adult education levels from 1970 to 2000. This was
+accomplished by using the filter function and piping operator to make two new dataframes. One contains the whole
+number amount of adults who have obtained one of the four education levels and the second is the percentage value
+of that same statistic.
+I then make the data into more readable tibble using pivot_longer and then to provide a graph by year I use
+separate to brek up the education level and the year.
+```{r}
+whole_nums_USA <- whole_nums_edu_levels %>%
+  filter(state == "US")
+
+percents_USA <- percents_edu_levels %>%
+  filter(state == "US")
+
+nums_df <- whole_nums_USA %>% pivot_longer(cols=c(3:ncol(whole_nums_USA)) )
+
+nums_df <- nums_df %>% separate(name, into=c("name", "year"), sep=", ")
+
+percents_df <- percents_USA %>% pivot_longer(cols=c(3:ncol(percents_USA)) )
+
+percents_df <- percents_df %>% separate(name, into=c("name", "year"), sep=", ")
+```
+
+Now using my new dataframes with the information I want to visualize, I use ggplot to make a plot.
+```{r}
+
+library(ggplot2)
+#make line graph for whole nums
+whole<-ggplot(nums_df, aes(x=year, y=value, group=name, color=name)) + scale_y_continuous(labels = scales::number_format(accuracy = 1)) +
+  geom_line()
+
+print(whole)
+
+percents<-ggplot(percents_df, aes(x=year, y=value, group=name, color=name)) + scale_y_continuous(labels = scales::number_format(accuracy = 1)) +
+  geom_line()
+
+print(percents)
+```
+We see that the overall trend is an increase in adults obtaining higher levels of education. What we hope to see 
+once the new datasets regarding rates of violent crime are introduced is an overall decrease in incidents of violent
+crime.
+I also hope to see that the rates of violent crime are decreasing with the increasing of adults obtaining higher
+levels of education.

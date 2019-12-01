@@ -1,6 +1,6 @@
 ---
-title: " " #replace the title with something short and catchy to represent your project
-subtitle: "____'s Data Science Portfolio" #replace blank with your name
+title: "The Education of Violence"
+subtitle: "Jay's Data Science Portfolio" 
 output:
   html_document:
     df_print: paged
@@ -8,7 +8,8 @@ output:
 
 ## Abstract
 
-In under 250 words give a brief summary of the project so far.
+This project looks to show what, if any relationships may occur between adult levels of education, addiction and rates of
+violent incidents.
 
 ### 1. Discovery and Data Preparation
 

@@ -13,7 +13,8 @@ violent incidents.
 
 ### 1. Discovery and Data Preparation
 
-Provide a one-sentence introduction with what is covered by the first deliverable along with a link to another html page that gives the details.
+Data for adult levels of education by county and state from 1970 to 2000. The data has been cleaned and tidied along with
+graphed. https://github.com/introdsci/DataScience-th3n1ghtmanc0m3th/blob/master/deliverable1.html
 
 ### 2. Model Planning and Building
 

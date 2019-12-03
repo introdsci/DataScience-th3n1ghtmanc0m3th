@@ -14,11 +14,12 @@ violent incidents.
 ### 1. Discovery and Data Preparation
 
 Data for adult levels of education by county and state from 1970 to 2000. The data has been cleaned and tidied along with
-graphed. https://github.com/introdsci/DataScience-th3n1ghtmanc0m3th/blob/master/deliverable1.html
+graphed. <a href="deliverable1.html" title="Deliverable 1">Deliverable 1</a>
 
 ### 2. Model Planning and Building
 
-Coming soon...
+Data for rates of violent crime by year and state. Modelling and prediction for those two datasets combined.
+<a href="deliverable2.html" title="Deliverable 2">Deliverable 2</a>
 
 ### 3. Results and Operationalization
 

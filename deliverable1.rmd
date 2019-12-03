@@ -155,6 +155,8 @@ crime.
 I also hope to see that the rates of violent crime are decreasing with the increasing of adults obtaining higher
 levels of education.
 
+The code below sets up tables to be joined together by decade and state with the violent crime statistics in the next phase.
+
 ```{r}
 long<-pivot_longer(eduLevelsbyCounty, -c("state", "area_name"),
             names_to = c(".value", "year"), 

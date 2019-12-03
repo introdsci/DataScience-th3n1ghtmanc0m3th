@@ -115,6 +115,7 @@ number amount of adults who have obtained one of the four education levels and t
 of that same statistic.
 I then make the data into more readable tibble using pivot_longer and then to provide a graph by year I use
 separate to brek up the education level and the year.
+
 ```{r}
 whole_nums_USA <- whole_nums_edu_levels %>%
   filter(state == "US")
@@ -132,6 +133,7 @@ percents_df <- percents_df %>% separate(name, into=c("name", "year"), sep=", ")
 ```
 
 Now using my new dataframes with the information I want to visualize, I use ggplot to make a plot.
+
 ```{r}
 
 library(ggplot2)
@@ -146,8 +148,74 @@ percents<-ggplot(percents_df, aes(x=year, y=value, group=name, color=name)) + sc
 
 print(percents)
 ```
+
 We see that the overall trend is an increase in adults obtaining higher levels of education. What we hope to see 
 once the new datasets regarding rates of violent crime are introduced is an overall decrease in incidents of violent
 crime.
 I also hope to see that the rates of violent crime are decreasing with the increasing of adults obtaining higher
 levels of education.
+
+```{r}
+long<-pivot_longer(eduLevelsbyCounty, -c("state", "area_name"),
+            names_to = c(".value", "year"), 
+            names_sep = ",", values_drop_na = TRUE) 
+
+long_pre_join <- select(long, 1:7)
+
+states_vec <- c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "D.C.", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennslyvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
+
+states_decades <- filter(long_pre_join, area_name %in% states_vec)
+
+alabama_ed_decades <- filter(states_decades, area_name == "Alabama")
+alaska_ed_decades <- filter(states_decades, area_name == "Alaska")
+arizona_ed_decades <- filter(states_decades, area_name == "Arizona")
+arkansas_ed_decades <- filter(states_decades, area_name == "Arkansas")
+california_ed_decades <- filter(states_decades, area_name == "California")
+colorado_ed_decades <- filter(states_decades, area_name == "Colorado")
+connecticut_ed_decades <- filter(states_decades, area_name == "Connecticut")
+delaware_ed_decades <- filter(states_decades, area_name == "Delaware")
+dc_ed_decades <- filter(states_decades, area_name == "D.C.")
+florida_ed_decades <-  filter(states_decades, area_name == "Florida")
+georgia_ed_decades <- filter(states_decades, area_name == "Georgia")
+hawaii_ed_decades <- filter(states_decades, area_name == "Hawaii")
+idaho_ed_decades <- filter(states_decades, area_name == "Idaho")
+illinois_ed_decades <- filter(states_decades, area_name == "Illinois")      
+indiana_ed_decades <- filter(states_decades, area_name == "Indiana")
+iowa_ed_decades <- filter(states_decades, area_name == "Iowa")
+kansas_ed_decades <- filter(states_decades, area_name == "Kansas")
+kentucky_ed_decades <- filter(states_decades, area_name == "Kentucky")
+louisiana_ed_decades <- filter(states_decades, area_name == "Louisiana")
+maine_ed_decades <- filter(states_decades, area_name == "Maine")
+maryland_ed_decades <- filter(states_decades, area_name == "Maryland")
+mass_ed_decades <- filter(states_decades, area_name == "Massachusetts")
+michigan_ed_decades <- filter(states_decades, area_name == "Michigan")
+minnesota_ed_decades <- filter(states_decades, area_name == "Minnesota")
+mississippi_ed_decades <- filter(states_decades, area_name == "Mississippi")
+missouri_ed_decades <- filter(states_decades, area_name == "Missouri")
+montana_ed_decades <- filter(states_decades, area_name == "Montana")
+nebraska_ed_decades <- filter(states_decades, area_name == "Nebraska")
+nevada_ed_decades <- filter(states_decades, area_name == "Nevada")
+newHampshire_ed_decades <- filter(states_decades, area_name == "New Hampshire")
+newJersey_ed_decades <- filter(states_decades, area_name == "New Jersey")
+newMexico_ed_decades <- filter(states_decades, area_name == "New Mexico")
+newYork_ed_decades <- filter(states_decades, area_name == "New York")
+northCarolina_ed_decades <- filter(states_decades, area_name == "North Carolina")
+northDakota_ed_decades <- filter(states_decades, area_name == "North Dakota")
+ohio_ed_decades <- filter(states_decades, area_name == "Ohio")
+oklahoma_ed_decades <- filter(states_decades, area_name == "Oklahoma")
+oregon_ed_decades <- filter(states_decades, area_name == "Oregon")
+pennslyvania_ed_decades <- filter(states_decades, area_name == "Pennslyvania")
+rhodeIsland_ed_decades <- filter(states_decades, area_name == "Rhode Island")
+southCarolina_ed_decades <- filter(states_decades, area_name == "South Carolina")
+southDakota_ed_decades <- filter(states_decades, area_name == "South Dakota")
+tennessee_ed_decades <- filter(states_decades, area_name == "Tennessee")
+texas_ed_decades <- filter(states_decades, area_name == "Texas")
+utah_ed_decades <- filter(states_decades, area_name == "Utah")
+vermont_ed_decades <- filter(states_decades, area_name == "Vermont")
+virginia_ed_decades <- filter(states_decades, area_name == "Virginia")
+washington_ed_decades <- filter(states_decades, area_name == "Washington")
+westVirginia_ed_decades <- filter(states_decades, area_name == "West Virginia")
+wisconsin_ed_decades <- filter(states_decades, area_name == "Wisconsin")
+wyoming_ed_decades <- filter(states_decades, area_name == "Wyoming")
+
+```

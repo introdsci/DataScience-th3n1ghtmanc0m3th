@@ -1,5 +1,5 @@
 ---
-title: "deliverable2"
+title: "Phase 2"
 author: "Jay Gohner"
 date: "November 21, 2019"
 output: html_document
@@ -15,8 +15,8 @@ this step of the project.
 ```{r}
 suppressMessages(library("tidyverse"))
 suppressMessages(library("knitr"))
-purl("deliverable1.rmd", output = "part1.r") # produces r source from rmd
-source("part1.r") # executes the source
+purl("deliverable1.rmd", output = "part1.r")
+source("part1.r")
 ```
 
 I found a large xlsx from https://www.ucrdatatool.gov/Search/Crime/State/RunCrimeStatebyState.cfm

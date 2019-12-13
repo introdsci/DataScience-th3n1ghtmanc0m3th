@@ -1,0 +1,72 @@
+---
+title: "Deliverable 3"
+author: "Jay Gohner"
+date: "December 13, 2019"
+output: html_document
+---
+
+
+```{r GlobalOptions, echo=FALSE}
+options(knitr.duplicate.label = 'allow')
+```
+
+In this part we bring in all of the data and graphs from the first two phases so that we may discuss the operationalization of the data
+and the summary of what we have found and what could be done with this information.
+
+```{r echo=FALSE, message=FALSE, error=FALSE, warning=FALSE, results='hide'}
+include <- function(library_name){
+  if( !(library_name %in% installed.packages()) )
+    install.packages(library_name) 
+  library(library_name, character.only=TRUE)
+}
+include("tidyverse")
+include("knitr")
+purl("deliverable2.rmd", output = "part2.r")
+source("part2.r")
+options(scipen=999)
+```
+
+## PEER REVIEW
+
+My previous work was peer reviewed by Kyle Kirk and this is what he had to say.
+
+<h1>Modeling</h1>
+
+There was a lot of work that went into building the tables for this model. The model had a very good p-value so the model is on to
+something. The graph does not represent the model well so that would need to be fixed.
+
+<h1>R Proficiency</h1> 
+
+Upon reviewing the code it was clear that there was a strong understanding of R and some creative custom functions. I worked with similar
+education data and know the process well.
+
+<h1>Communication</h1>
+All of the R code chunks had very thourough documentation and presented a clear picture of what was being done and why. I feel with no
+knowledge of R I could still understand the process that was undergone for this project.
+
+<h1>Critical Thinking</h1>
+The project looked to show a correalation between rising levels of adults obtaining higher levels of education and a decrease in incidents
+of violent crime. It is important topic to be studied and while a relatively simple correalation it is still an important one.
+
+<h1>Summary</h1>
+Overall the project seems to accomplish it's goals of finding a correalation between the two datasets. There are obviously many other
+factors that will contribute to this so that would be worth exploring in the future.
+
+
+<h3>Cross-Validation</h3>
+While the data I have does show a positive correaltion like I had hoped I believe more data is needed to back up my study. The problem is
+finding data that matches state year and demographics you are looking for. So much is behind a paywall or just plain unavailable.
+
+<h3>Operationalization</h3>
+This data shows that when there is an increase in the amount of adults obtaining a higher level of education that there will be a decrease
+in the number of violent crimes in a state. As Kyle mentioned in my peer-review there are definitely other factors that will affect crime
+levels going down as well. I personally think the next step would be to somehow gather data on the quality of education in a state of study
+and the overall quality of social services and resources available to residents in that state. With this data perhaps more funding to
+education and extra-curricular actvities could applied to areas with higher rates of violence per capita.
+
+The things I worry about with a study like this is in our current hyper-partisan political state is that certain groups could be excluded
+and not benefit from the increase in funding.
+
+
+
+

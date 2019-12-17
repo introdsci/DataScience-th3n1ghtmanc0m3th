@@ -234,25 +234,29 @@ WY <- left_join(wyoming_ed_decades, wy_decades, by = c("area_name"="state"))
 
 ```
 
-We have nearly 50 tables with which to make a model. I decided to start with our home state. As we can see there does seem to be a
-correlation over the years as rates of adults get their diploma, rates of violent crime decrease.
-To make a valid model we will need a per capita column of both diploma and violent crime total.
+We have nearly 50 tables with which to make a model. I decided to start with our home state. To make a valid model we will need a per 
+capita column of both diploma and violent crime total.
 
 ```{r}
-CA %>% mutate(per_capita_diploma = CA$Diploma/CA$Population)
-```
+CA[, "Diploma_per_cap"] <-  scales::percent((as.numeric(unlist(CA[,"Diploma"])) / as.numeric(unlist(CA[,"Population"]))))
+CA[, "Violence_per_cap"] <-  scales::percent((as.numeric(unlist(CA[,"Violent_crime_total"])) / as.numeric(unlist(CA[,"Population"]))))
 
-
-
-```{r}
-
-corr_set <- lm(data=CA, formula=Violent_crime_total~Diploma+Year)
+corr_set <- lm(data=CA, formula=Violence_per_cap~Diploma_per_cap)
 
 summary(corr_set)
 
+sampling = createDataPartition(CA$Violence_per_cap, p = 0.70, list = FALSE) # p to tell 70% split
+train = violence[sampling, ]
+test = violence[-sampling, ]
+predict_violence_model <- lm(data=train, formula = Violence_per_cap ~ Diploma)
+violence_predictions <- predict(predict_violence_model, test)
+ggplot(data=test, aes(x=violence_predictions, y=test$Violence_per_cap)) + geom_point()
+R2(violence_predictions,test$Violence_per_cap)
+MAE(violence_predictions,test$Violence_per_cap)
+RMSE(violence_predictions,test$Violence_per_cap)
 ```
 
-Unfortunately my graph did not come out as expected.
+
 
 ```{r}
 
